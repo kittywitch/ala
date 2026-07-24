@@ -81,13 +81,20 @@
         # CC0
         "CC0 1.0 Universal" = cc0;
         "CC0-1.0" = cc0;
+        "CC0 1.0" = cc0;
         "CC0" = cc0;
         "CC0 / asked not to use" = cc0;
         # CC
-        "CC BY 4.0" = cc-by-40;
+        "CC-BY-SA" = cc-by-sa-30; # sitelen mun having an unspecified version is rough huh
         "CC BY-SA 3.0" = cc-by-sa-30;
+        "CC BY-NC 3.0" = cc-by-nc-30;
+        "CC BY-NC-SA 3.0" = cc-by-nc-sa-30;
+        "CC BY 4.0" = cc-by-40;
         "CC BY-SA 4.0" = cc-by-sa-40;
+        "CC-BY-SA 4.0" = cc-by-sa-40;
         "CC BY-ND 4.0" = cc-by-nd-40;
+        "CC-BY-ND 4.0" = cc-by-nd-40;
+        "CC BY NC SA 4.0" = cc-by-nc-sa-40;
         "Creative Commons BY-NC-SA 4.0" = cc-by-nc-sa-40;
         # other
         "MIT" = mit;
@@ -123,7 +130,7 @@
             {
               inherit (font) author;
               broken = fontData.${font.name}.broken or false;
-              license = licenseMap.${font.license} or lib.licenses.unfree;
+              license = licenseMap.${font.license} or (builtins.throw "${font.license} for ${font.name}");
             }
             // Set.optional (font.links ? "repo") {
               homepage = font.links.repo;
