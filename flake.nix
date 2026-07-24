@@ -14,7 +14,13 @@
     };
   };
 
-  outputs = { self, nixpkgs, sona, ijo, fl }@inputs: let
+  outputs = {
+    self,
+    nixpkgs,
+    sona,
+    ijo,
+    fl,
+  } @ inputs: let
     Std = fl.lib;
     inherit (Std) Set List Tuple Str;
     inherit (nixpkgs) lib;
@@ -51,14 +57,15 @@
       "toki pona OTF"
       "YU SITELEN LEKO PONA"
       "AJN Sitelen Pona"
-    ] (_: { broken = true; });
-      fontMetadataDir = builtins.readDir "${inputs.sona.outPath}/fonts/metadata";
-      fontMetadataFileReader = filename: builtins.readFile "${inputs.sona.outPath}/fonts/metadata/${filename}";
-      fontMetadataFiles = fontMetadataDir
-        |> Set.keys
-        |> List.map fontMetadataFileReader
-        |> List.map fromTOML
-        |> List.filter (f: f.filename != "");
+    ] (_: {broken = true;});
+    fontMetadataDir = builtins.readDir "${inputs.sona.outPath}/fonts/metadata";
+    fontMetadataFileReader = filename: builtins.readFile "${inputs.sona.outPath}/fonts/metadata/${filename}";
+    fontMetadataFiles =
+      fontMetadataDir
+      |> Set.keys
+      |> List.map fontMetadataFileReader
+      |> List.map fromTOML
+      |> List.filter (f: f.filename != "");
   in {
     inherit lib inputs Std fontMetadataFiles;
 
@@ -87,49 +94,50 @@
         "all rights reserved" = unfree;
       };
 
-      fontDeriver = font: pkgs.stdenvNoCC.mkDerivation {
-        pname = font.name;
-        version = font.version;
+      fontDeriver = font:
+        pkgs.stdenvNoCC.mkDerivation {
+          pname = font.name;
+          version = font.version;
 
+          src = "${ijo}/nasinsitelen";
 
-        src = "${ijo}/nasinsitelen";
+          installPhase = let
+            isTtf = Str.hasSuffix "ttf" font.filename;
+            isOtf = Str.hasSuffix "otf" font.filename;
+          in ''
+            runHook preInstall
 
-        installPhase = let
+              ${Str.optional isTtf ''
+              mkdir -p $out/share/fonts/truetype
+              install -Dm644 "${font.filename}" $out/share/fonts/truetype
+            ''}
+              ${Str.optional isOtf ''
+              mkdir -p $out/share/fonts/opentype
+              install -Dm644 "${font.filename}" $out/share/fonts/opentype
+            ''}
 
-          isTtf = Str.hasSuffix "ttf" font.filename;
-          isOtf = Str.hasSuffix "otf" font.filename;
+            runHook postInstall
+          '';
 
-        in ''
-        runHook preInstall
-
-          ${Str.optional isTtf ''
-          mkdir -p $out/share/fonts/truetype
-          install -Dm644 "${font.filename}" $out/share/fonts/truetype
-          ''}
-          ${Str.optional isOtf ''
-          mkdir -p $out/share/fonts/opentype
-          install -Dm644 "${font.filename}" $out/share/fonts/opentype
-          ''}
-
-        runHook postInstall
-        '';
-
-        meta = {
-          inherit (font) author;
-          broken = fontData.${font.name}.broken or false;
-          license = licenseMap.${font.license} or lib.licenses.unfree;
-        } // Set.optional (font.links ? "repo") {
-            homepage = font.links.repo;
-          } // Set.optional (font.links ? "webpage") {
-            homepage = font.links.webpage;
-          };
-      };
-      fontDerivations = fontMetadataFiles
+          meta =
+            {
+              inherit (font) author;
+              broken = fontData.${font.name}.broken or false;
+              license = licenseMap.${font.license} or lib.licenses.unfree;
+            }
+            // Set.optional (font.links ? "repo") {
+              homepage = font.links.repo;
+            }
+            // Set.optional (font.links ? "webpage") {
+              homepage = font.links.webpage;
+            };
+        };
+      fontDerivations =
+        fontMetadataFiles
         |> List.map (font: Tuple.tuple2 font.name (fontDeriver font))
         |> Set.fromList;
-      in {
-        fonts = fontDerivations;
-      });
-
+    in {
+      fonts = fontDerivations;
+    });
   };
 }
