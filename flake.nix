@@ -1,5 +1,5 @@
 {
-  description = "A very basic flake";
+  description = "ala";
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
@@ -136,7 +136,12 @@
         fontMetadataFiles
         |> List.map (font: Tuple.tuple2 font.name (fontDeriver font))
         |> Set.fromList;
+
+      # you like toki pona? ok, build every font
+      # WAIT NO NO NO NO NO NO
+      allFonts = pkgs.linkFarmFromDrvs "allFonts" (List.filter (f: !f.meta.broken) (Set.values fontDerivations));
     in {
+      inherit allFonts;
       fonts = fontDerivations;
     });
   };
