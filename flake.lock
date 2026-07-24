@@ -1,0 +1,98 @@
+{
+  "nodes": {
+    "fl": {
+      "inputs": {
+        "nix-std": "nix-std"
+      },
+      "locked": {
+        "lastModified": 1755319302,
+        "narHash": "sha256-RlRbcRXRgvt/gCVb3FnhLzARRiFNNangaw2GMaXhKsQ=",
+        "owner": "flakelib",
+        "repo": "std",
+        "rev": "53aa63f4aaac4a4939ae132ee17f42a10a02dad0",
+        "type": "github"
+      },
+      "original": {
+        "owner": "flakelib",
+        "ref": "main",
+        "repo": "std",
+        "type": "github"
+      }
+    },
+    "ijo": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1784346022,
+        "narHash": "sha256-wq8r/qtvpHUczAeJwEUr7f+lp5LM2FG9F9HFzRXg8GQ=",
+        "owner": "lipu-linku",
+        "repo": "ijo",
+        "rev": "a7c8f71e591ab36048f35cdd92c388c12b4a1107",
+        "type": "github"
+      },
+      "original": {
+        "owner": "lipu-linku",
+        "ref": "main",
+        "repo": "ijo",
+        "type": "github"
+      }
+    },
+    "nix-std": {
+      "locked": {
+        "lastModified": 1710870712,
+        "narHash": "sha256-e+7MJF2gsgTBuOWv4mCimSP0D9+naeFSw9a7N3yEmv4=",
+        "owner": "chessai",
+        "repo": "nix-std",
+        "rev": "31bbc925750cc9d8f828fe55cee1a2bd985e0c00",
+        "type": "github"
+      },
+      "original": {
+        "owner": "chessai",
+        "repo": "nix-std",
+        "type": "github"
+      }
+    },
+    "nixpkgs": {
+      "locked": {
+        "lastModified": 1784796856,
+        "narHash": "sha256-wWFrV5/Qbm+lyt5x20E/bSbfJiGKMo4RCxZV8cl/WZI=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "e2587caef70cea85dd97d7daab492899902dbf5d",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "root": {
+      "inputs": {
+        "fl": "fl",
+        "ijo": "ijo",
+        "nixpkgs": "nixpkgs",
+        "sona": "sona"
+      }
+    },
+    "sona": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1783439133,
+        "narHash": "sha256-CoSKSwaWiFDIU4Adz2Po7iu700BfkOKqFv+37K+X0SQ=",
+        "owner": "lipu-linku",
+        "repo": "sona",
+        "rev": "e4e8a0b2a19bc85defd7c68f630c3a677d301484",
+        "type": "github"
+      },
+      "original": {
+        "owner": "lipu-linku",
+        "ref": "main",
+        "repo": "sona",
+        "type": "github"
+      }
+    }
+  },
+  "root": "root",
+  "version": 7
+}
